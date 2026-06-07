@@ -100,7 +100,9 @@ module.exports = grammar({
         $._newline,
       ),
 
-    local_id: ($) => /@\d+/,
+    local_id: ($) => seq($.at_sign, $.id_number),
+    at_sign: ($) => "@",
+    id_number: ($) => /\d+/,
     kind: ($) =>
       choice(
         "fn", "type", "method", "iface", "var", "const",
@@ -125,9 +127,9 @@ module.exports = grammar({
         $._newline,
       ),
 
-    target_id: ($) => /@\d+/,
+    target_id: ($) => seq($.at_sign, $.id_number),
     arrow: ($) => "<",
-    source_id: ($) => /@\d+/,
+    source_id: ($) => seq($.at_sign, $.id_number),
     edge_type: ($) => /[a-zA-Z_]+/,
     status: ($) => choice("added", "removed"),
 

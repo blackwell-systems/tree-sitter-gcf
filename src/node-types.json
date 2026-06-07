@@ -94,6 +94,11 @@
     }
   },
   {
+    "type": "id_number",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "key",
     "named": true,
     "fields": {}
@@ -143,6 +148,25 @@
   },
   {
     "type": "local_id",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "at_sign",
+          "named": true
+        },
+        {
+          "type": "id_number",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "number",
     "named": true,
     "fields": {}
   },
@@ -250,7 +274,21 @@
   {
     "type": "source_id",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "at_sign",
+          "named": true
+        },
+        {
+          "type": "id_number",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "status",
@@ -310,7 +348,21 @@
   {
     "type": "target_id",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "at_sign",
+          "named": true
+        },
+        {
+          "type": "id_number",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "text_line",
@@ -357,6 +409,10 @@
   },
   {
     "type": "arrow",
+    "named": true
+  },
+  {
+    "type": "at_sign",
     "named": true
   },
   {
@@ -417,10 +473,6 @@
   },
   {
     "type": "nested_field",
-    "named": true
-  },
-  {
-    "type": "number",
     "named": true
   },
   {

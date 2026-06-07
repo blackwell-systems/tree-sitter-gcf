@@ -15,16 +15,15 @@
 (field_name) @property
 
 ; Symbol lines
-(symbol_line (local_id) @variable)
+(at_sign) @punctuation.special
+(id_number) @number
 (symbol_line (kind) @type.builtin)
 (symbol_line (qualified_name) @function)
 (symbol_line (score) @number.float)
 (symbol_line (provenance) @attribute)
 
 ; Edge lines
-(target_id) @variable
 (arrow) @operator
-(source_id) @variable
 (edge_type) @label
 (status) @keyword
 

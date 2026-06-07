@@ -373,8 +373,25 @@
       ]
     },
     "local_id": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "at_sign"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "id_number"
+        }
+      ]
+    },
+    "at_sign": {
+      "type": "STRING",
+      "value": "@"
+    },
+    "id_number": {
       "type": "PATTERN",
-      "value": "@\\d+"
+      "value": "\\d+"
     },
     "kind": {
       "type": "CHOICE",
@@ -508,16 +525,34 @@
       ]
     },
     "target_id": {
-      "type": "PATTERN",
-      "value": "@\\d+"
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "at_sign"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "id_number"
+        }
+      ]
     },
     "arrow": {
       "type": "STRING",
       "value": "<"
     },
     "source_id": {
-      "type": "PATTERN",
-      "value": "@\\d+"
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "at_sign"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "id_number"
+        }
+      ]
     },
     "edge_type": {
       "type": "PATTERN",
