@@ -1,0 +1,25 @@
+{
+  "grammars": [
+    {
+      "name": "gcf",
+      "camelcase": "GCF",
+      "scope": "source.gcf",
+      "path": ".",
+      "file-types": ["gcf"],
+      "highlights": "queries/highlights.scm"
+    }
+  ],
+  "metadata": {
+    "version": "0.1.0",
+    "license": "MIT",
+    "description": "Tree-sitter grammar for GCF (token-optimized wire format for LLMs)",
+    "authors": [
+      {
+        "name": "Dayna Blackwell"
+      }
+    ],
+    "links": {
+      "repository": "https://github.com/blackwell-systems/tree-sitter-gcf"
+    }
+  }
+}

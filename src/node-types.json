@@ -1,0 +1,110 @@
+[
+  {
+    "type": "source_file",
+    "named": true,
+    "root": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "blank_line",
+          "named": true
+        },
+        {
+          "type": "comment",
+          "named": true
+        },
+        {
+          "type": "edge_line",
+          "named": true
+        },
+        {
+          "type": "header",
+          "named": true
+        },
+        {
+          "type": "inline_array",
+          "named": true
+        },
+        {
+          "type": "kv_line",
+          "named": true
+        },
+        {
+          "type": "nested_field",
+          "named": true
+        },
+        {
+          "type": "ref_line",
+          "named": true
+        },
+        {
+          "type": "section_header",
+          "named": true
+        },
+        {
+          "type": "summary_line",
+          "named": true
+        },
+        {
+          "type": "symbol_line",
+          "named": true
+        },
+        {
+          "type": "tabular_row",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "blank_line",
+    "named": true
+  },
+  {
+    "type": "comment",
+    "named": true
+  },
+  {
+    "type": "edge_line",
+    "named": true
+  },
+  {
+    "type": "header",
+    "named": true
+  },
+  {
+    "type": "inline_array",
+    "named": true
+  },
+  {
+    "type": "kv_line",
+    "named": true
+  },
+  {
+    "type": "nested_field",
+    "named": true
+  },
+  {
+    "type": "ref_line",
+    "named": true
+  },
+  {
+    "type": "section_header",
+    "named": true
+  },
+  {
+    "type": "summary_line",
+    "named": true
+  },
+  {
+    "type": "symbol_line",
+    "named": true
+  },
+  {
+    "type": "tabular_row",
+    "named": true
+  }
+]

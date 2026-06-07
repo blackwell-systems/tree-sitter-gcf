@@ -1,0 +1,11 @@
+(header) @keyword
+(section_header) @type
+(summary_line) @attribute
+(symbol_line) @variable
+(edge_line) @operator
+(ref_line) @comment
+(comment) @comment
+(kv_line) @property
+(inline_array) @string
+(tabular_row) @string
+(nested_field) @property

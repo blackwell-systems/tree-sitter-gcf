@@ -1,0 +1,45 @@
+================================================================================
+Graph profile payload
+================================================================================
+
+GCF tool=context_for_task budget=5000 tokens=1847 symbols=2 edges=1
+## targets
+@0 fn pkg.Auth 0.78 lsp_resolved
+## related
+@1 fn pkg.Server 0.54 lsp_resolved
+## edges [1]
+@0<@1 calls
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (header
+    (header_field (identifier) (value))
+    (header_field (identifier) (value))
+    (header_field (identifier) (value))
+    (header_field (identifier) (value))
+    (header_field (identifier) (value))
+    (newline))
+  (section_header (section_name) (newline))
+  (symbol_line (local_id) (kind) (qualified_name) (score) (provenance) (newline))
+  (section_header (section_name) (newline))
+  (symbol_line (local_id) (kind) (qualified_name) (score) (provenance) (newline))
+  (section_header (section_name) (count_bracket (number)) (newline))
+  (edge_line (local_id) (local_id) (edge_type) (newline)))
+
+================================================================================
+Generic profile payload
+================================================================================
+
+## employees [3]{id,name,department,salary}
+1|Alice|Engineering|95000
+2|Bob|Sales|72000
+3|Carol|Marketing|85000
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (section_header (section_name) (count_bracket (number)) (field_decl (identifier) (identifier) (identifier) (identifier)) (newline))
+  (tabular_row (value) (value) (value) (value) (newline))
+  (tabular_row (value) (value) (value) (value) (newline))
+  (tabular_row (value) (value) (value) (value) (newline)))

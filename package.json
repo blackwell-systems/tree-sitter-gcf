@@ -1,0 +1,21 @@
+{
+  "name": "tree-sitter-gcf",
+  "version": "0.1.0",
+  "description": "Tree-sitter grammar for GCF (token-optimized wire format for LLMs)",
+  "main": "bindings/node",
+  "keywords": ["tree-sitter", "gcf", "parser", "syntax-highlighting"],
+  "license": "MIT",
+  "dependencies": {
+    "nan": "^2.18.0"
+  },
+  "devDependencies": {
+    "tree-sitter-cli": "^0.26.0"
+  },
+  "tree-sitter": [
+    {
+      "scope": "source.gcf",
+      "file-types": ["gcf"],
+      "highlights": "queries/highlights.scm"
+    }
+  ]
+}
