@@ -9,6 +9,8 @@ Tree-sitter grammar for [GCF](https://gcformat.com/), the token-optimized wire f
 
 Enables syntax highlighting in Neovim, Helix, Zed, Emacs, and any editor that supports tree-sitter.
 
+![GCF syntax highlighting](assets/gcf-highlight.png)
+
 ## Supported syntax
 
 - Header lines (`GCF tool=... symbols=... edges=...`)
