@@ -9,3 +9,4 @@
 (inline_array) @string
 (tabular_row) @string
 (nested_field) @property
+(text_line) @string

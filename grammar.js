@@ -22,6 +22,7 @@ module.exports = grammar({
         $.inline_array,
         $.nested_field,
         $.tabular_row,
+        $.text_line,
         $.blank_line,
       ),
 
@@ -84,9 +85,10 @@ module.exports = grammar({
         /\n/,
       )),
 
-    // key=value
+    // key=value (with optional leading whitespace)
     kv_line: ($) =>
       token(seq(
+        /\s*/,
         /[a-zA-Z_][a-zA-Z0-9_]*/,
         "=",
         /[^\n]*/,
@@ -116,6 +118,13 @@ module.exports = grammar({
     tabular_row: ($) =>
       token(seq(
         /[^\n]*\|[^\n]*/,
+        /\n/,
+      )),
+
+    // Fallback: any other non-empty line
+    text_line: ($) =>
+      token(seq(
+        /[^\n#@.][^\n]*/,
         /\n/,
       )),
   },

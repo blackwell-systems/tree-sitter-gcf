@@ -55,6 +55,10 @@
         {
           "type": "tabular_row",
           "named": true
+        },
+        {
+          "type": "text_line",
+          "named": true
         }
       ]
     }
@@ -105,6 +109,10 @@
   },
   {
     "type": "tabular_row",
+    "named": true
+  },
+  {
+    "type": "text_line",
     "named": true
   }
 ]
