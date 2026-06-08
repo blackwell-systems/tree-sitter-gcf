@@ -76,4 +76,4 @@ tree-sitter highlight test.gcf
 
 ## License
 
-MIT
+MIT - [Dayna Blackwell](https://github.com/blackwell-systems)
