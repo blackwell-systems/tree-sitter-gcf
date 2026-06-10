@@ -1,6 +1,6 @@
 {
   "name": "tree-sitter-gcf",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Tree-sitter grammar for GCF (token-optimized wire format for LLMs)",
   "main": "bindings/node",
   "keywords": ["tree-sitter", "gcf", "parser", "syntax-highlighting"],
