@@ -49,18 +49,19 @@ module.exports = grammar({
     kv_value: ($) => /[^\n]+/,
 
     // ---------------------------------------------------------------
-    // ## _summary symbols=3 edges=2 ...
+    // ##! summary counts=3 ...
     // ---------------------------------------------------------------
     summary_line: ($) =>
       seq(
-        $._section_marker,
+        $._summary_marker,
         $._ws,
         $._summary_keyword,
         repeat(seq(" ", $.kv_pair)),
         $._newline,
       ),
 
-    _summary_keyword: ($) => alias("_summary", $.summary_keyword),
+    _summary_marker: ($) => "##!",
+    _summary_keyword: ($) => alias("summary", $.summary_keyword),
 
     // ---------------------------------------------------------------
     // ## targets, ## edges [N], ## name [N]{f1,f2}
