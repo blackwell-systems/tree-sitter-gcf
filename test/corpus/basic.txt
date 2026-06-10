@@ -13,19 +13,45 @@ GCF tool=context_for_task budget=5000 tokens=1847 symbols=2 edges=1
 --------------------------------------------------------------------------------
 
 (source_file
+  (blank_line)
   (header
-    (header_field (identifier) (value))
-    (header_field (identifier) (value))
-    (header_field (identifier) (value))
-    (header_field (identifier) (value))
-    (header_field (identifier) (value))
-    (newline))
-  (section_header (section_name) (newline))
-  (symbol_line (local_id) (kind) (qualified_name) (score) (provenance) (newline))
-  (section_header (section_name) (newline))
-  (symbol_line (local_id) (kind) (qualified_name) (score) (provenance) (newline))
-  (section_header (section_name) (count_bracket (number)) (newline))
-  (edge_line (local_id) (local_id) (edge_type) (newline)))
+    (gcf_keyword)
+    (kv_pair
+      (key)
+      (kv_value)))
+  (section_header
+    (section_name))
+  (symbol_line
+    (local_id
+      (at_sign)
+      (id_number))
+    (kind)
+    (qualified_name)
+    (score)
+    (provenance))
+  (section_header
+    (section_name))
+  (symbol_line
+    (local_id
+      (at_sign)
+      (id_number))
+    (kind)
+    (qualified_name)
+    (score)
+    (provenance))
+  (section_header
+    (section_name)
+    (count_bracket
+      (number)))
+  (edge_line
+    (target_id
+      (at_sign)
+      (id_number))
+    (arrow)
+    (source_id
+      (at_sign)
+      (id_number))
+    (edge_type)))
 
 ================================================================================
 Generic profile payload
@@ -39,7 +65,16 @@ Generic profile payload
 --------------------------------------------------------------------------------
 
 (source_file
-  (section_header (section_name) (count_bracket (number)) (field_decl (identifier) (identifier) (identifier) (identifier)) (newline))
-  (tabular_row (value) (value) (value) (value) (newline))
-  (tabular_row (value) (value) (value) (value) (newline))
-  (tabular_row (value) (value) (value) (value) (newline)))
+  (blank_line)
+  (section_header
+    (section_name)
+    (count_bracket
+      (number))
+    (field_decl
+      (field_name)
+      (field_name)
+      (field_name)
+      (field_name)))
+  (tabular_row)
+  (tabular_row)
+  (tabular_row))

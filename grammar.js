@@ -202,8 +202,9 @@ module.exports = grammar({
       seq($.text_content, $._newline),
 
     // Excludes lines starting with known prefixes (GCF, ##, @, #, .)
-    // Uses negative lookahead-like approach: first char can't start a known rule
-    text_content: ($) => /[a-fh-zA-FH-Z0-9][^\n]*/,
+    // Also excludes lines containing = (those should be kv_line)
+    // and lines containing | (those should be tabular_row)
+    text_content: ($) => /[a-fh-zA-FH-Z0-9][^\n=|]*/,
 
     // ---------------------------------------------------------------
     // Helpers

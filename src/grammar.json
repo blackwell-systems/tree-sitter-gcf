@@ -731,7 +731,7 @@
     },
     "text_content": {
       "type": "PATTERN",
-      "value": "[a-fh-zA-FH-Z0-9][^\\n]*"
+      "value": "[a-fh-zA-FH-Z0-9][^\\n=|]*"
     },
     "_ws": {
       "type": "PATTERN",
