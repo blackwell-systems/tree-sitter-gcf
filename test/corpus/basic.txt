@@ -1,8 +1,8 @@
 ================================================================================
-Graph profile payload
+Graph profile header
 ================================================================================
 
-GCF tool=context_for_task budget=5000 tokens=1847 symbols=2 edges=1
+GCF profile=graph tool=context_for_task budget=5000 tokens=1847 symbols=2 edges=1
 ## targets
 @0 fn pkg.Auth 0.78 lsp_resolved
 ## related
@@ -16,14 +16,28 @@ GCF tool=context_for_task budget=5000 tokens=1847 symbols=2 edges=1
   (blank_line)
   (header
     (gcf_keyword)
-    (kv_pair
-      (key)
-      (kv_value)))
+    (header_pair
+      (header_key)
+      (header_value))
+    (header_pair
+      (header_key)
+      (header_value))
+    (header_pair
+      (header_key)
+      (header_value))
+    (header_pair
+      (header_key)
+      (header_value))
+    (header_pair
+      (header_key)
+      (header_value))
+    (header_pair
+      (header_key)
+      (header_value)))
   (section_header
     (section_name))
   (symbol_line
     (local_id
-      (at_sign)
       (id_number))
     (kind)
     (qualified_name)
@@ -33,7 +47,6 @@ GCF tool=context_for_task budget=5000 tokens=1847 symbols=2 edges=1
     (section_name))
   (symbol_line
     (local_id
-      (at_sign)
       (id_number))
     (kind)
     (qualified_name)
@@ -42,39 +55,120 @@ GCF tool=context_for_task budget=5000 tokens=1847 symbols=2 edges=1
   (section_header
     (section_name)
     (count_bracket
-      (number)))
+      (count_number)))
   (edge_line
-    (target_id
-      (at_sign)
+    (target_ref
       (id_number))
-    (arrow)
-    (source_id
-      (at_sign)
+    (source_ref
       (id_number))
     (edge_type)))
 
 ================================================================================
-Generic profile payload
+Generic tabular with inline schema
 ================================================================================
 
-## employees [3]{id,name,department,salary}
-1|Alice|Engineering|95000
-2|Bob|Sales|72000
-3|Carol|Marketing|85000
+GCF profile=generic
+## orders [2]{customer,id,total}
+@0 ^{email,name,tier}|1|99.99
+alice@test.com|Alice|premium
+@1 ^|2|49.99
+bob@test.com|Bob|standard
 
 --------------------------------------------------------------------------------
 
 (source_file
   (blank_line)
+  (header
+    (gcf_keyword)
+    (header_pair
+      (header_key)
+      (header_value)))
   (section_header
     (section_name)
     (count_bracket
-      (number))
+      (count_number))
     (field_decl
-      (field_name)
       (field_name)
       (field_name)
       (field_name)))
   (tabular_row)
   (tabular_row)
+  (tabular_row)
   (tabular_row))
+
+================================================================================
+Generic key-value with attachment
+================================================================================
+
+GCF profile=generic
+name=root
+## children [1]{type,members}
+@0 group|^
+.members [2]{id,role}
+    1|admin
+    2|user
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (blank_line)
+  (header
+    (gcf_keyword)
+    (header_pair
+      (header_key)
+      (header_value)))
+  (kv_line
+    (kv_key)
+    (kv_value))
+  (section_header
+    (section_name)
+    (count_bracket
+      (count_number))
+    (field_decl
+      (field_name)
+      (field_name)))
+  (tabular_row)
+  (attachment_line
+    (attachment_name)
+    (attachment_array
+      (count_bracket
+        (count_number))
+      (field_decl
+        (field_name)
+        (field_name))))
+  (tabular_row)
+  (tabular_row))
+
+================================================================================
+Root scalar
+================================================================================
+
+GCF profile=generic
+=42
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (blank_line)
+  (header
+    (gcf_keyword)
+    (header_pair
+      (header_key)
+      (header_value)))
+  (root_scalar
+    (scalar_value)))
+
+================================================================================
+Summary trailer
+================================================================================
+
+##! summary counts=3,2
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (blank_line)
+  (summary_line
+    (kv_pair
+      (kv_key)
+      (kv_value))))

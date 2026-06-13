@@ -6,86 +6,95 @@ module.exports = grammar({
 
   extras: ($) => [],
 
-  conflicts: ($) => [
-    [$.tabular_row],
-  ],
+  conflicts: ($) => [],
 
   rules: {
     source_file: ($) => repeat($._line),
 
     _line: ($) =>
       choice(
-        $.header,
-        $.summary_line,
-        $.section_header,
-        $.edge_line,
-        $.ref_line,
-        $.symbol_line,
-        $.comment,
-        $.inline_array,
-        $.nested_field,
-        $.kv_line,
-        $.tabular_row,
-        $.text_line,
+        prec(10, $.header),
+        prec(9, $.summary_line),
+        prec(8, $.section_header),
+        prec(8, $.root_scalar),
+        prec(7, $.edge_line),
+        prec(7, $.ref_line),
+        prec(7, $.symbol_line),
+        prec(6, $.comment),
+        prec(5, $.attachment_line),
+        prec(4, $.inline_array),
+        prec(3, $.kv_line),
+        prec(3, $.expanded_item),
+        prec(2, $.tabular_row),
+        prec(1, $.text_line),
         $.blank_line,
       ),
 
     blank_line: ($) => /\r?\n/,
 
     // ---------------------------------------------------------------
-    // GCF tool=... budget=... tokens=... symbols=... edges=...
+    // GCF profile=generic key=value ...
     // ---------------------------------------------------------------
     header: ($) =>
       seq(
         $.gcf_keyword,
-        repeat1(seq(" ", $.kv_pair)),
+        repeat1(seq(" ", $.header_pair)),
         $._newline,
       ),
 
     gcf_keyword: ($) => "GCF",
-
-    kv_pair: ($) => seq($.key, "=", $.kv_value),
-    key: ($) => /[a-zA-Z_][a-zA-Z0-9_]*/,
-    kv_value: ($) => /[^\n]+/,
+    header_pair: ($) => seq($.header_key, "=", $.header_value),
+    header_key: ($) => /[a-zA-Z_][a-zA-Z0-9_]*/,
+    header_value: ($) => /[^ \n\r]+/,
 
     // ---------------------------------------------------------------
-    // ##! summary counts=3 ...
+    // =scalar (root scalar value)
+    // ---------------------------------------------------------------
+    root_scalar: ($) =>
+      seq("=", $.scalar_value, $._newline),
+
+    // ---------------------------------------------------------------
+    // ##! summary counts=3 key=val ...
     // ---------------------------------------------------------------
     summary_line: ($) =>
       seq(
-        $._summary_marker,
+        "##!",
         $._ws,
-        $._summary_keyword,
-        repeat(seq(" ", $.kv_pair)),
+        "summary",
+        repeat(seq($._ws, $.kv_pair)),
         $._newline,
       ),
 
-    _summary_marker: ($) => "##!",
-    _summary_keyword: ($) => alias("summary", $.summary_keyword),
-
     // ---------------------------------------------------------------
-    // ## targets, ## edges [N], ## name [N]{f1,f2}
+    // ## name [N]{f1,f2}, ## [N]{f1,f2}, ## name
     // ---------------------------------------------------------------
     section_header: ($) =>
       seq(
-        $._section_marker,
+        "##",
         $._ws,
-        $.section_name,
-        optional(seq($._ws, $.count_bracket)),
+        optional($.section_name),
+        optional(seq(optional($._ws), $.count_bracket)),
         optional($.field_decl),
-        optional(repeat(seq($._ws, $.kv_pair))),
         $._newline,
       ),
 
-    _section_marker: ($) => "##",
-    section_name: ($) => /[a-zA-Z_][a-zA-Z0-9_]*/,
-    count_bracket: ($) => seq("[", choice($.number, $.deferred), "]"),
-    deferred: ($) => "?",
+    section_name: ($) => choice(
+      $.quoted_string,
+      /[a-zA-Z_][a-zA-Z0-9_]*/,
+    ),
+
+    count_bracket: ($) => seq("[", choice($.count_number, $.deferred_marker), "]"),
+    count_number: ($) => /\d+/,
+    deferred_marker: ($) => "?",
+
     field_decl: ($) => seq("{", $.field_name, repeat(seq(",", $.field_name)), "}"),
-    field_name: ($) => /[a-zA-Z_][a-zA-Z0-9_]*/,
+    field_name: ($) => choice(
+      $.quoted_string,
+      /[a-zA-Z_][a-zA-Z0-9_]*/,
+    ),
 
     // ---------------------------------------------------------------
-    // @0 fn pkg.Auth 0.78 lsp_resolved
+    // @0 fn pkg.Auth 0.78 lsp_resolved (graph profile)
     // ---------------------------------------------------------------
     symbol_line: ($) =>
       seq(
@@ -101,8 +110,7 @@ module.exports = grammar({
         $._newline,
       ),
 
-    local_id: ($) => seq($.at_sign, $.id_number),
-    at_sign: ($) => "@",
+    local_id: ($) => seq("@", $.id_number),
     id_number: ($) => /\d+/,
     kind: ($) =>
       choice(
@@ -119,30 +127,25 @@ module.exports = grammar({
     // ---------------------------------------------------------------
     edge_line: ($) =>
       seq(
-        $.target_id,
-        $.arrow,
-        $.source_id,
+        $.target_ref,
+        "<",
+        $.source_ref,
         $._ws,
         $.edge_type,
-        optional(seq($._ws, $.status)),
+        optional(seq($._ws, $.edge_status)),
         $._newline,
       ),
 
-    target_id: ($) => seq($.at_sign, $.id_number),
-    arrow: ($) => "<",
-    source_id: ($) => seq($.at_sign, $.id_number),
+    target_ref: ($) => seq("@", $.id_number),
+    source_ref: ($) => seq("@", $.id_number),
     edge_type: ($) => /[a-zA-Z_]+/,
-    status: ($) => choice("added", "removed"),
+    edge_status: ($) => choice("added", "removed"),
 
     // ---------------------------------------------------------------
     // @0  # previously transmitted
     // ---------------------------------------------------------------
     ref_line: ($) =>
-      token(seq(
-        /@\d+/,
-        /  # previously transmitted/,
-        /\n/,
-      )),
+      token(seq(/@\d+/, /  # previously transmitted/, /\n/)),
 
     // ---------------------------------------------------------------
     // # comment text
@@ -151,44 +154,75 @@ module.exports = grammar({
       token(seq("# ", /[^\n]*/, /\n/)),
 
     // ---------------------------------------------------------------
-    // name[N]: val1,val2,val3
+    // .fieldname {}, .fieldname [N]: vals, .fieldname [N]{fields}
     // ---------------------------------------------------------------
-    inline_array: ($) =>
-      token(seq(
-        /[a-zA-Z_][a-zA-Z0-9_]*/,
-        /\[\d+\]/,
-        ": ",
-        /[^\n]+/,
-        /\n/,
-      )),
-
-    // ---------------------------------------------------------------
-    // .fieldname
-    // ---------------------------------------------------------------
-    nested_field: ($) =>
-      token(seq(
-        /\s*/,
-        ".",
-        /[a-zA-Z_][a-zA-Z0-9_]*/,
-        /\n/,
-      )),
-
-    // ---------------------------------------------------------------
-    //   key=value (indented)
-    // ---------------------------------------------------------------
-    kv_line: ($) =>
+    attachment_line: ($) =>
       seq(
         optional($._indent),
-        $.key,
-        "=",
-        $.kv_value,
+        ".",
+        $.attachment_name,
+        $._ws,
+        choice(
+          $.attachment_object,
+          $.attachment_array,
+        ),
         $._newline,
       ),
 
-    _indent: ($) => / +/,
+    attachment_name: ($) => choice(
+      $.quoted_string,
+      /[a-zA-Z_][a-zA-Z0-9_]*/,
+    ),
+
+    attachment_object: ($) => "{}",
+
+    attachment_array: ($) => seq(
+      $.count_bracket,
+      optional(choice(
+        seq($.field_decl, optional(seq(optional($._ws), $.tabular_row_inline))),
+        seq(":", optional(seq($._ws, $.inline_values))),
+      )),
+    ),
+
+    inline_values: ($) => /[^\n]+/,
+    tabular_row_inline: ($) => /[^\n]+/,
 
     // ---------------------------------------------------------------
-    // val1|val2|val3 (with optional @id prefix)
+    // name[N]: val1,val2,val3
+    // ---------------------------------------------------------------
+    inline_array: ($) =>
+      seq(
+        optional($._indent),
+        $.inline_array_name,
+        $.count_bracket,
+        ":",
+        optional(seq($._ws, $.inline_values)),
+        $._newline,
+      ),
+
+    inline_array_name: ($) => choice(
+      $.quoted_string,
+      /[a-zA-Z_][a-zA-Z0-9_]*/,
+    ),
+
+    // ---------------------------------------------------------------
+    // @N =scalar, @N {}, @N [N]: vals, @N [N]{fields}
+    // ---------------------------------------------------------------
+    expanded_item: ($) =>
+      seq(
+        optional($._indent),
+        $.local_id,
+        $._ws,
+        choice(
+          seq("=", $.scalar_value),
+          "{}",
+          $.attachment_array,
+        ),
+        $._newline,
+      ),
+
+    // ---------------------------------------------------------------
+    // val1|val2|val3 (tabular row, may have @N prefix)
     // ---------------------------------------------------------------
     tabular_row: ($) =>
       token(seq(
@@ -197,21 +231,42 @@ module.exports = grammar({
       )),
 
     // ---------------------------------------------------------------
-    // Fallback for unrecognized lines (delta payloads, etc.)
+    // key=value (with optional indentation)
+    // ---------------------------------------------------------------
+    kv_line: ($) =>
+      seq(
+        optional($._indent),
+        $.kv_key,
+        "=",
+        $.kv_value,
+        $._newline,
+      ),
+
+    kv_pair: ($) => seq($.kv_key, "=", $.kv_value),
+    kv_key: ($) => choice(
+      $.quoted_string,
+      /[a-zA-Z_][a-zA-Z0-9_]*/,
+    ),
+    kv_value: ($) => /[^\n]+/,
+
+    // ---------------------------------------------------------------
+    // Fallback for unrecognized lines
+    // Lines not starting with GCF, ##, @, #, ., = and not containing |
     // ---------------------------------------------------------------
     text_line: ($) =>
       seq($.text_content, $._newline),
 
-    // Excludes lines starting with known prefixes (GCF, ##, @, #, .)
-    // Also excludes lines containing = (those should be kv_line)
-    // and lines containing | (those should be tabular_row)
-    text_content: ($) => /[a-fh-zA-FH-Z0-9][^\n=|]*/,
+    text_content: ($) => /[^GCF@#.=|\n\r \t][^\n|=]*/,
 
     // ---------------------------------------------------------------
-    // Helpers
+    // Shared tokens
     // ---------------------------------------------------------------
+    scalar_value: ($) => /[^\n]+/,
+    cell_values: ($) => /[^\n]+/,
+    quoted_string: ($) => /"(?:[^"\\]|\\.)*"/,
+
     _ws: ($) => / +/,
+    _indent: ($) => / +/,
     _newline: ($) => /\r?\n/,
-    number: ($) => /\d+/,
   },
 });
