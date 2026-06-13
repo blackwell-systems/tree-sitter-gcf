@@ -1,21 +1,21 @@
 ; Header
 (gcf_keyword) @keyword
-(header (kv_pair (key) @property))
-(header (kv_pair (kv_value) @number))
+(header_pair (header_key) @property)
+(header_pair (header_value) @number)
 
 ; Section headers
 "##" @keyword
 (section_name) @type
 (count_bracket "[" @punctuation.bracket)
 (count_bracket "]" @punctuation.bracket)
-(count_bracket (number) @number)
-(deferred) @operator
+(count_number) @number
+(deferred_marker) @operator
 (field_decl "{" @punctuation.bracket)
 (field_decl "}" @punctuation.bracket)
 (field_name) @property
 
 ; Symbol lines
-(at_sign) @punctuation.special
+(local_id "@" @punctuation.special)
 (id_number) @number
 (symbol_line (kind) @type.builtin)
 (symbol_line (qualified_name) @function)
@@ -23,31 +23,37 @@
 (symbol_line (provenance) @attribute)
 
 ; Edge lines
-(arrow) @operator
+"<" @operator
 (edge_type) @label
-(status) @keyword
+(edge_status) @keyword
 
 ; Bare references
 (ref_line) @comment
 
 ; Key-value pairs
-(kv_line (key) @property)
+(kv_line (kv_key) @property)
 (kv_line (kv_value) @string)
 "=" @operator
 
 ; Summary
-(summary_keyword) @keyword
-(summary_line (kv_pair (key) @property))
+"##!" @keyword
+"summary" @keyword
+(summary_line (kv_pair (kv_key) @property))
 (summary_line (kv_pair (kv_value) @number))
 
-; Inline arrays
-(inline_array) @string
+; Root scalar
+(root_scalar (scalar_value) @string)
+
+; Attachment lines
+(attachment_line "." @punctuation.special)
+(attachment_name) @property
+(attachment_object) @punctuation.bracket
+
+; Expanded items
+(expanded_item (local_id) @punctuation.special)
 
 ; Tabular rows
 (tabular_row) @string
-
-; Nested fields
-(nested_field) @property
 
 ; Comments
 (comment) @comment
