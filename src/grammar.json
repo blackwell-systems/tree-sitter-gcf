@@ -86,6 +86,14 @@
         },
         {
           "type": "PREC",
+          "value": 5,
+          "content": {
+            "type": "SYMBOL",
+            "name": "indented_data"
+          }
+        },
+        {
+          "type": "PREC",
           "value": 4,
           "content": {
             "type": "SYMBOL",
@@ -1050,6 +1058,26 @@
     "kv_value": {
       "type": "PATTERN",
       "value": "[^\\n]+"
+    },
+    "indented_data": {
+      "type": "TOKEN",
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "PATTERN",
+            "value": " {2,}"
+          },
+          {
+            "type": "PATTERN",
+            "value": "[^.@#\\n][^\\n]*"
+          },
+          {
+            "type": "PATTERN",
+            "value": "\\n"
+          }
+        ]
+      }
     },
     "text_line": {
       "type": "SEQ",

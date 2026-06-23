@@ -449,6 +449,10 @@
           "named": true
         },
         {
+          "type": "indented_data",
+          "named": true
+        },
+        {
           "type": "inline_array",
           "named": true
         },
@@ -678,6 +682,10 @@
   {
     "type": "iface",
     "named": false
+  },
+  {
+    "type": "indented_data",
+    "named": true
   },
   {
     "type": "method",

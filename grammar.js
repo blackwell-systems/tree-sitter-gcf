@@ -22,6 +22,7 @@ module.exports = grammar({
         prec(7, $.symbol_line),
         prec(6, $.comment),
         prec(5, $.attachment_line),
+        prec(5, $.indented_data),
         prec(4, $.inline_array),
         prec(3, $.kv_line),
         prec(3, $.expanded_item),
@@ -248,6 +249,13 @@ module.exports = grammar({
       /[a-zA-Z_][a-zA-Z0-9_]*/,
     ),
     kv_value: ($) => /[^\n]+/,
+
+    // ---------------------------------------------------------------
+    // Indented data lines (attachment body rows, bare values)
+    // Matches indented content that isn't an attachment, kv, or inline array.
+    // ---------------------------------------------------------------
+    indented_data: ($) =>
+      token(seq(/ {2,}/, /[^.@#\n][^\n]*/, /\n/)),
 
     // ---------------------------------------------------------------
     // Fallback for unrecognized lines

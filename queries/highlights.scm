@@ -58,5 +58,8 @@
 ; Comments
 (comment) @comment
 
+; Indented data (attachment body rows)
+(indented_data) @string
+
 ; Text fallback
 (text_content) @string

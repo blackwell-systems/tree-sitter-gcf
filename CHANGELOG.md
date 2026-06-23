@@ -1,5 +1,14 @@
 # Changelog
 
+## v1.1.0 (2026-06-22)
+
+### Spec v3.2 support
+
+- Flattened path columns (`"customer>name"`) parse correctly as quoted field names (no grammar change needed)
+- Fixed indented attachment body rows (`    A1`) that previously caused parse errors
+- Added `indented_data` rule for bare values under attachments
+- Added highlight for indented data as `@string`
+
 ## v1.0.0 (2026-06-12)
 
 Spec-compliant grammar for GCF v2.0.0 (inline schema format).
