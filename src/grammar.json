@@ -379,8 +379,17 @@
           "value": "{"
         },
         {
-          "type": "SYMBOL",
-          "name": "field_name"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "identity_field"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "field_name"
+            }
+          ]
         },
         {
           "type": "REPEAT",
@@ -392,8 +401,17 @@
                 "value": ","
               },
               {
-                "type": "SYMBOL",
-                "name": "field_name"
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "identity_field"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "field_name"
+                  }
+                ]
               }
             ]
           }
@@ -401,6 +419,19 @@
         {
           "type": "STRING",
           "value": "}"
+        }
+      ]
+    },
+    "identity_field": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "@"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "field_name"
         }
       ]
     },

@@ -13,6 +13,9 @@
 (field_decl "{" @punctuation.bracket)
 (field_decl "}" @punctuation.bracket)
 (field_name) @property
+; Identity field marker (generic-profile delta, Section 10a)
+(identity_field "@" @punctuation.special)
+(identity_field (field_name) @property)
 
 ; Symbol lines
 (local_id "@" @punctuation.special)

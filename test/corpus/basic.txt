@@ -172,3 +172,53 @@ Summary trailer
     (kv_pair
       (kv_key)
       (kv_value))))
+
+================================================================================
+Generic-profile delta with identity field (Section 10a)
+================================================================================
+
+GCF profile=generic delta=true base_root=sha256:a new_root=sha256:b key=id
+## added [1]{@id,total}
+1004|75
+## removed [1]{@id}
+1001
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (blank_line)
+  (header
+    (gcf_keyword)
+    (header_pair
+      (header_key)
+      (header_value))
+    (header_pair
+      (header_key)
+      (header_value))
+    (header_pair
+      (header_key)
+      (header_value))
+    (header_pair
+      (header_key)
+      (header_value))
+    (header_pair
+      (header_key)
+      (header_value)))
+  (section_header
+    (section_name)
+    (count_bracket
+      (count_number))
+    (field_decl
+      (identity_field
+        (field_name))
+      (field_name)))
+  (tabular_row)
+  (section_header
+    (section_name)
+    (count_bracket
+      (count_number))
+    (field_decl
+      (identity_field
+        (field_name))))
+  (text_line
+    (text_content)))

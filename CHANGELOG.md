@@ -1,5 +1,14 @@
 # Changelog
 
+## v1.2.0 (2026-07-11)
+
+### Spec v3.3 support (generic-profile delta, Section 10a)
+
+- Field declarations now accept the `@`-prefixed identity column introduced by generic-profile delta, e.g. `## added [1]{@id,total,status,customer}`, `## removed [1]{@id}`, and the delta-participating full base `## orders [3]{@id,...}`. Previously the leading `@` produced an `ERROR` node.
+- New `identity_field` node wraps the `@` marker and the field name; highlighted with the `@` as `@punctuation.special` (consistent with local IDs) and the name as `@property`.
+- The generic delta/full headers (`delta=true`, `base_root=`, `new_root=`, `key=`, `pack_root=`, `savings=`) already parse as generic `header_pair`s; no header change needed.
+- Added a corpus test covering a generic-profile delta payload (added/removed with identity fields).
+
 ## v1.1.0 (2026-06-22)
 
 ### Spec v3.2 support

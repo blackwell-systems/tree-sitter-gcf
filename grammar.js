@@ -88,7 +88,17 @@ module.exports = grammar({
     count_number: ($) => /\d+/,
     deferred_marker: ($) => "?",
 
-    field_decl: ($) => seq("{", $.field_name, repeat(seq(",", $.field_name)), "}"),
+    // A field declaration lists the columns of a tabular/delta section. In the
+    // generic-profile delta form (SPEC Section 10a) the identity column is marked
+    // with a leading `@`, e.g. `{@id,total,status,customer}` or `{@id}`.
+    field_decl: ($) =>
+      seq(
+        "{",
+        choice($.identity_field, $.field_name),
+        repeat(seq(",", choice($.identity_field, $.field_name))),
+        "}",
+      ),
+    identity_field: ($) => seq("@", $.field_name),
     field_name: ($) => choice(
       $.quoted_string,
       /[a-zA-Z_][a-zA-Z0-9_]*/,

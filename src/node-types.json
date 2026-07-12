@@ -164,6 +164,10 @@
         {
           "type": "field_name",
           "named": true
+        },
+        {
+          "type": "identity_field",
+          "named": true
         }
       ]
     }
@@ -230,6 +234,21 @@
     "type": "id_number",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "identity_field",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "field_name",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "inline_array",
