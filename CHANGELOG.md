@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.3.1 (2026-07-13)
+
+### Graph delta edge and removed lines; conformance parse test
+
+- The graph delta `## edges_added` / `## edges_removed` lines (`source -> target type`) and `## removed` lines (`kind qname`) now parse as `delta_edge_line` and `removed_line` nodes and highlight consistently, instead of falling back to the generic text rule. Both are matched as atomic tokens (the edge form requires `->`, the removed form begins with a known kind abbreviation) so they do not disturb the `@`-prefixed local IDs or keyword tokens.
+- New `scripts/parse-conformance.mjs` (`npm run test:conformance`): parses every GCF payload in the sibling `../gcf` conformance suite (~150 real graph, generic, delta, session, and streaming payloads) and ratchets against a known-gaps allow-list, so a new parse regression fails the run. Soft-skips when the spec repo is not checked out alongside.
+- Added a corpus test for the delta removed and edge lines.
+
 ## v1.3.0 (2026-07-13)
 
 ### Spec v3.4.1 support (graph delta distance field, Section 10.1)

@@ -244,3 +244,23 @@ Graph delta added line with trailing distance (Section 10.1)
     (score)
     (provenance)
     (distance)))
+
+================================================================================
+Graph delta removed and edge lines (Section 10.1)
+================================================================================
+
+## removed
+fn pkg.OldHandler
+## edges_added
+pkg.Router -> pkg.NewHandler calls
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (blank_line)
+  (section_header
+    (section_name))
+  (removed_line)
+  (section_header
+    (section_name))
+  (delta_edge_line))

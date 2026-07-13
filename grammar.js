@@ -18,8 +18,10 @@ module.exports = grammar({
         prec(8, $.section_header),
         prec(8, $.root_scalar),
         prec(7, $.edge_line),
+        prec(7, $.delta_edge_line),
         prec(7, $.ref_line),
         prec(7, $.symbol_line),
+        prec(7, $.removed_line),
         prec(6, $.comment),
         prec(5, $.attachment_line),
         prec(5, $.indented_data),
@@ -156,6 +158,29 @@ module.exports = grammar({
     source_ref: ($) => seq("@", $.id_number),
     edge_type: ($) => /[a-zA-Z_]+/,
     edge_status: ($) => choice("added", "removed"),
+
+    // Graph delta `## edges_added` / `## edges_removed` lines: `source -> target type`.
+    // Matched as an atomic token (requires `->` and includes the newline) so it wins
+    // over the generic text fallback by length, without disturbing the `@`-prefixed
+    // local IDs or keyword tokens the way a bare qualified-name token would.
+    delta_edge_line: ($) =>
+      token(seq(/[^\s@][^\s]*/, / +/, "->", / +/, /[^\s]+/, / +/, /[a-zA-Z_]+/, /\r?\n/)),
+
+    // Graph delta `## removed` lines: `kind qname` (identity only). Atomic token that
+    // begins with a known kind abbreviation followed by a single qualified name.
+    removed_line: ($) =>
+      token(
+        seq(
+          choice(
+            "fn", "type", "method", "iface", "var", "const",
+            "resource", "table", "class", "selector", "field",
+            "route", "ext", "file", "pkg", "svc",
+          ),
+          / +/,
+          /[^\s]+/,
+          /\r?\n/,
+        ),
+      ),
 
     // ---------------------------------------------------------------
     // @0  # previously transmitted

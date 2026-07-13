@@ -32,6 +32,10 @@
 (edge_type) @label
 (edge_status) @keyword
 
+; Graph delta `## removed` (kind qname) and `## edges_*` (source -> target type) lines
+(removed_line) @function
+(delta_edge_line) @function
+
 ; Bare references
 (ref_line) @comment
 

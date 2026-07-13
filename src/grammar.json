@@ -57,6 +57,14 @@
           "value": 7,
           "content": {
             "type": "SYMBOL",
+            "name": "delta_edge_line"
+          }
+        },
+        {
+          "type": "PREC",
+          "value": 7,
+          "content": {
+            "type": "SYMBOL",
             "name": "ref_line"
           }
         },
@@ -66,6 +74,14 @@
           "content": {
             "type": "SYMBOL",
             "name": "symbol_line"
+          }
+        },
+        {
+          "type": "PREC",
+          "value": 7,
+          "content": {
+            "type": "SYMBOL",
+            "name": "removed_line"
           }
         },
         {
@@ -708,6 +724,135 @@
           "value": "removed"
         }
       ]
+    },
+    "delta_edge_line": {
+      "type": "TOKEN",
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "PATTERN",
+            "value": "[^\\s@][^\\s]*"
+          },
+          {
+            "type": "PATTERN",
+            "value": " +"
+          },
+          {
+            "type": "STRING",
+            "value": "->"
+          },
+          {
+            "type": "PATTERN",
+            "value": " +"
+          },
+          {
+            "type": "PATTERN",
+            "value": "[^\\s]+"
+          },
+          {
+            "type": "PATTERN",
+            "value": " +"
+          },
+          {
+            "type": "PATTERN",
+            "value": "[a-zA-Z_]+"
+          },
+          {
+            "type": "PATTERN",
+            "value": "\\r?\\n"
+          }
+        ]
+      }
+    },
+    "removed_line": {
+      "type": "TOKEN",
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "fn"
+              },
+              {
+                "type": "STRING",
+                "value": "type"
+              },
+              {
+                "type": "STRING",
+                "value": "method"
+              },
+              {
+                "type": "STRING",
+                "value": "iface"
+              },
+              {
+                "type": "STRING",
+                "value": "var"
+              },
+              {
+                "type": "STRING",
+                "value": "const"
+              },
+              {
+                "type": "STRING",
+                "value": "resource"
+              },
+              {
+                "type": "STRING",
+                "value": "table"
+              },
+              {
+                "type": "STRING",
+                "value": "class"
+              },
+              {
+                "type": "STRING",
+                "value": "selector"
+              },
+              {
+                "type": "STRING",
+                "value": "field"
+              },
+              {
+                "type": "STRING",
+                "value": "route"
+              },
+              {
+                "type": "STRING",
+                "value": "ext"
+              },
+              {
+                "type": "STRING",
+                "value": "file"
+              },
+              {
+                "type": "STRING",
+                "value": "pkg"
+              },
+              {
+                "type": "STRING",
+                "value": "svc"
+              }
+            ]
+          },
+          {
+            "type": "PATTERN",
+            "value": " +"
+          },
+          {
+            "type": "PATTERN",
+            "value": "[^\\s]+"
+          },
+          {
+            "type": "PATTERN",
+            "value": "\\r?\\n"
+          }
+        ]
+      }
     },
     "ref_line": {
       "type": "TOKEN",
