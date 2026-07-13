@@ -118,8 +118,13 @@ module.exports = grammar({
         $.score,
         $._ws,
         $.provenance,
+        optional(seq($._ws, $.distance)),
         $._newline,
       ),
+
+    // Graph delta `## added` node lines carry a trailing distance field
+    // (SPEC 3.4.1, Section 10.1); full-payload symbol lines omit it.
+    distance: ($) => /\d+/,
 
     local_id: ($) => seq("@", $.id_number),
     id_number: ($) => /\d+/,

@@ -222,3 +222,25 @@ GCF profile=generic delta=true base_root=sha256:a new_root=sha256:b key=id
         (field_name))))
   (text_line
     (text_content)))
+
+================================================================================
+Graph delta added line with trailing distance (Section 10.1)
+================================================================================
+
+## added
+@0 fn pkg.NewHandler 0.85 lsp 0
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (blank_line)
+  (section_header
+    (section_name))
+  (symbol_line
+    (local_id
+      (id_number))
+    (kind)
+    (qualified_name)
+    (score)
+    (provenance)
+    (distance)))

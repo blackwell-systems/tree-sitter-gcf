@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.3.0 (2026-07-13)
+
+### Spec v3.4.1 support (graph delta distance field, Section 10.1)
+
+- The graph delta `## added` node line carries a trailing `distance` field (e.g. `@0 fn pkg.NewHandler 0.85 lsp 0`); `symbol_line` now accepts the optional sixth field. Previously the trailing distance produced an `ERROR` node. Full-payload symbol lines (five fields) are unaffected.
+- New `distance` node, highlighted as `@number`.
+- Added a corpus test covering the delta added line with a trailing distance.
+
 ## v1.2.0 (2026-07-11)
 
 ### Spec v3.3 support (generic-profile delta, Section 10a)

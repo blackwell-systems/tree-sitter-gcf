@@ -24,6 +24,8 @@
 (symbol_line (qualified_name) @function)
 (symbol_line (score) @number.float)
 (symbol_line (provenance) @attribute)
+; Graph delta `## added` node lines carry a trailing distance (SPEC 3.4.1)
+(symbol_line (distance) @number)
 
 ; Edge lines
 "<" @operator

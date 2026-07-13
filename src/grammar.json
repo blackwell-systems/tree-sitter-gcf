@@ -488,10 +488,35 @@
           "name": "provenance"
         },
         {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "_ws"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "distance"
+                }
+              ]
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
           "type": "SYMBOL",
           "name": "_newline"
         }
       ]
+    },
+    "distance": {
+      "type": "PATTERN",
+      "value": "\\d+"
     },
     "local_id": {
       "type": "SEQ",

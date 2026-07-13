@@ -99,6 +99,11 @@
     "fields": {}
   },
   {
+    "type": "distance",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "edge_line",
     "named": true,
     "fields": {},
@@ -548,6 +553,10 @@
       "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "distance",
+          "named": true
+        },
         {
           "type": "kind",
           "named": true
