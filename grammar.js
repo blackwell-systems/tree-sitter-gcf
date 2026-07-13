@@ -73,11 +73,14 @@ module.exports = grammar({
     // ---------------------------------------------------------------
     section_header: ($) =>
       seq(
+        optional($._indent),
         "##",
         $._ws,
         optional($.section_name),
         optional(seq(optional($._ws), $.count_bracket)),
         optional($.field_decl),
+        // Root/section primitive array: `## [N]: a,b,c`
+        optional(seq(":", optional($._ws), $.inline_values)),
         $._newline,
       ),
 
@@ -205,6 +208,9 @@ module.exports = grammar({
         choice(
           $.attachment_object,
           $.attachment_array,
+          // Scalar attachment: `.field =value` (e.g. a flattened field name that
+          // itself contains `>`, which cannot be a path column: SPEC 7.4.6.1.4)
+          seq("=", $.scalar_value),
         ),
         $._newline,
       ),
@@ -303,7 +309,7 @@ module.exports = grammar({
     text_line: ($) =>
       seq($.text_content, $._newline),
 
-    text_content: ($) => /[^GCF@#.=|\n\r \t][^\n|=]*/,
+    text_content: ($) => /[^GCF@#.=|"\n\r \t][^\n|=]*/,
 
     // ---------------------------------------------------------------
     // Shared tokens

@@ -1,5 +1,15 @@
 # Changelog
 
+## v1.3.3 (2026-07-13)
+
+### Full conformance-parse coverage (generic-profile edge cases)
+
+- Quoted keys in key-value lines now parse as `kv_line` instead of falling to the text rule: `"first name"=Alice`, `""=value`, `"123"=value`, `"a.b"=value`, `"line\none"=value`. `text_content` no longer begins with a `"`.
+- Section headers accept leading indentation, so nested section headers (`  ## level2`) parse.
+- Root and section primitive arrays (`## [3]: a,b,c`) parse.
+- Scalar attachments (`.field =value`, e.g. a flattened field name that itself contains `>`, SPEC 7.4.6.1.4) parse.
+- With these, every one of the 148 GCF payloads in the sibling conformance suite parses with zero `ERROR` nodes; the `npm run test:conformance` allow-list is now empty. Added corpus tests for each form.
+
 ## v1.3.2 (2026-07-13)
 
 ### Unknown kinds pass through verbatim (SPEC Section 5)

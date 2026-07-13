@@ -274,6 +274,18 @@
       "type": "SEQ",
       "members": [
         {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_indent"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
           "type": "STRING",
           "value": "##"
         },
@@ -328,6 +340,39 @@
             {
               "type": "SYMBOL",
               "name": "field_decl"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": ":"
+                },
+                {
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "SYMBOL",
+                      "name": "_ws"
+                    },
+                    {
+                      "type": "BLANK"
+                    }
+                  ]
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "inline_values"
+                }
+              ]
             },
             {
               "type": "BLANK"
@@ -866,6 +911,19 @@
             {
               "type": "SYMBOL",
               "name": "attachment_array"
+            },
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "="
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "scalar_value"
+                }
+              ]
             }
           ]
         },
@@ -1230,7 +1288,7 @@
     },
     "text_content": {
       "type": "PATTERN",
-      "value": "[^GCF@#.=|\\n\\r \\t][^\\n|=]*"
+      "value": "[^GCF@#.=|\"\\n\\r \\t][^\\n|=]*"
     },
     "scalar_value": {
       "type": "PATTERN",

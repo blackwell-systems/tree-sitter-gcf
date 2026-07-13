@@ -30,15 +30,7 @@ if (!existsSync(confRoot)) {
 // CRLF-comment cases; see CHANGELOG. Remove an entry here when the grammar is
 // extended to cover it (the suite will tell you when one starts passing).
 const KNOWN_GAPS = new Set([
-  'containers/007_nested_object_indentation',
-  'decode/001_scalar_and_key_forms',
-  'flatten/016_gt_in_field_name',
-  'keys/003_key_with_space',
-  'keys/005_empty_key',
-  'keys/006_numeric_key',
-  'keys/007_key_with_dot',
-  'keys/010_key_with_newline',
-  'roots/003_root_array_primitive',
+  // Empty: every conformance payload parses clean as of v1.3.3.
 ]);
 
 function isGcf(s) {

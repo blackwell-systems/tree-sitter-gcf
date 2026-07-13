@@ -45,6 +45,10 @@
         {
           "type": "attachment_object",
           "named": true
+        },
+        {
+          "type": "scalar_value",
+          "named": true
         }
       ]
     }
@@ -415,6 +419,10 @@
         },
         {
           "type": "field_decl",
+          "named": true
+        },
+        {
+          "type": "inline_values",
           "named": true
         },
         {
