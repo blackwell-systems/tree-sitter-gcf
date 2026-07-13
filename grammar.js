@@ -130,12 +130,11 @@ module.exports = grammar({
 
     local_id: ($) => seq("@", $.id_number),
     id_number: ($) => /\d+/,
-    kind: ($) =>
-      choice(
-        "fn", "type", "method", "iface", "var", "const",
-        "resource", "table", "class", "selector", "field",
-        "route", "ext", "file", "pkg", "svc",
-      ),
+    // A kind abbreviation. The standard table (SPEC Section 5) is fn / type /
+    // method / iface / var / const / ..., but decoders MUST accept unknown kinds
+    // verbatim (Section 5), so this matches any identifier token rather than a
+    // closed set. Safe here because the symbol line is anchored by its `@id` prefix.
+    kind: ($) => /[a-zA-Z_][a-zA-Z0-9_]*/,
     qualified_name: ($) => /[^\s]+/,
     score: ($) => /\d+\.\d+/,
     provenance: ($) => /[a-zA-Z_][a-zA-Z0-9_]*/,

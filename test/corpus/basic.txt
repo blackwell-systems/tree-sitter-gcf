@@ -264,3 +264,21 @@ pkg.Router -> pkg.NewHandler calls
   (section_header
     (section_name))
   (delta_edge_line))
+
+================================================================================
+Symbol line with unknown kind (passed through verbatim, Section 5)
+================================================================================
+
+@0 widget pkg.Custom 0.80 ast
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (blank_line)
+  (symbol_line
+    (local_id
+      (id_number))
+    (kind)
+    (qualified_name)
+    (score)
+    (provenance)))

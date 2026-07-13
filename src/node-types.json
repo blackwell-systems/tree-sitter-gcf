@@ -672,16 +672,8 @@
     "named": false
   },
   {
-    "type": "class",
-    "named": false
-  },
-  {
     "type": "comment",
     "named": true
-  },
-  {
-    "type": "const",
-    "named": false
   },
   {
     "type": "deferred_marker",
@@ -696,22 +688,6 @@
     "named": true
   },
   {
-    "type": "ext",
-    "named": false
-  },
-  {
-    "type": "field",
-    "named": false
-  },
-  {
-    "type": "file",
-    "named": false
-  },
-  {
-    "type": "fn",
-    "named": false
-  },
-  {
     "type": "gcf_keyword",
     "named": true
   },
@@ -720,20 +696,8 @@
     "named": true
   },
   {
-    "type": "iface",
-    "named": false
-  },
-  {
     "type": "indented_data",
     "named": true
-  },
-  {
-    "type": "method",
-    "named": false
-  },
-  {
-    "type": "pkg",
-    "named": false
   },
   {
     "type": "qualified_name",
@@ -756,31 +720,11 @@
     "named": true
   },
   {
-    "type": "resource",
-    "named": false
-  },
-  {
-    "type": "route",
-    "named": false
-  },
-  {
     "type": "score",
     "named": true
   },
   {
-    "type": "selector",
-    "named": false
-  },
-  {
     "type": "summary",
-    "named": false
-  },
-  {
-    "type": "svc",
-    "named": false
-  },
-  {
-    "type": "table",
     "named": false
   },
   {
@@ -790,14 +734,6 @@
   {
     "type": "text_content",
     "named": true
-  },
-  {
-    "type": "type",
-    "named": false
-  },
-  {
-    "type": "var",
-    "named": false
   },
   {
     "type": "{",

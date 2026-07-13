@@ -33,8 +33,6 @@ const KNOWN_GAPS = new Set([
   'containers/007_nested_object_indentation',
   'decode/001_scalar_and_key_forms',
   'flatten/016_gt_in_field_name',
-  'graph-decode/002_comments_crlf_and_kind',
-  'graph-encode/002_ordering_and_unknown_kind',
   'keys/003_key_with_space',
   'keys/005_empty_key',
   'keys/006_numeric_key',

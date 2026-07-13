@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.3.2 (2026-07-13)
+
+### Unknown kinds pass through verbatim (SPEC Section 5)
+
+- The graph symbol line's `kind` field now accepts any identifier, not just the standard abbreviations, so an unknown kind (e.g. `@1 widget pkg.Custom 0.80 ast`) parses and highlights instead of producing an `ERROR` node. SPEC Section 5 requires decoders to accept unknown kind abbreviations verbatim. The `## removed` line keeps the closed kind set (it is not `@`-anchored, so an open set would over-match plain text). Resolves the two remaining graph conformance-parse gaps (`graph-encode/002`, `graph-decode/002`).
+- Added a corpus test for an unknown kind.
+
 ## v1.3.1 (2026-07-13)
 
 ### Graph delta edge and removed lines; conformance parse test
