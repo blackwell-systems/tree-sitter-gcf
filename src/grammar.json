@@ -142,6 +142,14 @@
         },
         {
           "type": "PREC",
+          "value": 2,
+          "content": {
+            "type": "SYMBOL",
+            "name": "quoted_data_row"
+          }
+        },
+        {
+          "type": "PREC",
           "value": 1,
           "content": {
             "type": "SYMBOL",
@@ -419,6 +427,18 @@
           ]
         },
         {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "keyed_marker"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
           "type": "STRING",
           "value": "]"
         }
@@ -431,6 +451,10 @@
     "deferred_marker": {
       "type": "STRING",
       "value": "?"
+    },
+    "keyed_marker": {
+      "type": "STRING",
+      "value": ":"
     },
     "field_decl": {
       "type": "SEQ",
@@ -598,7 +622,7 @@
     },
     "kind": {
       "type": "PATTERN",
-      "value": "[a-zA-Z_][a-zA-Z0-9_]*"
+      "value": "[^\\s={\\[][^\\s]*"
     },
     "qualified_name": {
       "type": "PATTERN",
@@ -610,7 +634,7 @@
     },
     "provenance": {
       "type": "PATTERN",
-      "value": "[a-zA-Z_][a-zA-Z0-9_]*"
+      "value": "[^\\s]+"
     },
     "edge_line": {
       "type": "SEQ",
@@ -693,17 +717,8 @@
       "value": "[a-zA-Z_]+"
     },
     "edge_status": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "STRING",
-          "value": "added"
-        },
-        {
-          "type": "STRING",
-          "value": "removed"
-        }
-      ]
+      "type": "PATTERN",
+      "value": "[a-zA-Z_][a-zA-Z0-9_]*"
     },
     "delta_edge_line": {
       "type": "TOKEN",
@@ -1161,12 +1176,37 @@
             {
               "type": "SYMBOL",
               "name": "attachment_array"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "attachment_cell"
             }
           ]
         },
         {
           "type": "SYMBOL",
           "name": "_newline"
+        }
+      ]
+    },
+    "attachment_cell": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "^"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "field_decl"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         }
       ]
     },
@@ -1182,6 +1222,22 @@
           {
             "type": "PATTERN",
             "value": "\\n"
+          }
+        ]
+      }
+    },
+    "quoted_data_row": {
+      "type": "TOKEN",
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "PATTERN",
+            "value": "\"(?:[^\"\\\\]|\\\\.)*\""
+          },
+          {
+            "type": "PATTERN",
+            "value": "\\r?\\n"
           }
         ]
       }
@@ -1274,21 +1330,24 @@
       }
     },
     "text_line": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "text_content"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_newline"
-        }
-      ]
+      "type": "SYMBOL",
+      "name": "text_content"
     },
     "text_content": {
-      "type": "PATTERN",
-      "value": "[^GCF@#.=|\"\\n\\r \\t][^\\n|=]*"
+      "type": "TOKEN",
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "PATTERN",
+            "value": "[^GCF@#.=|\"\\n\\r \\t][^\\n|=]*"
+          },
+          {
+            "type": "PATTERN",
+            "value": "\\r?\\n"
+          }
+        ]
+      }
     },
     "scalar_value": {
       "type": "PATTERN",

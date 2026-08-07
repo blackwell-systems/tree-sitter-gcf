@@ -10,6 +10,8 @@
 (count_bracket "]" @punctuation.bracket)
 (count_number) @number
 (deferred_marker) @operator
+; Keyed-tabular map marker `[N:]` / `[?:]` (SPEC 7.2a)
+(keyed_marker) @operator
 (field_decl "{" @punctuation.bracket)
 (field_decl "}" @punctuation.bracket)
 (field_name) @property
@@ -60,9 +62,13 @@
 
 ; Expanded items
 (expanded_item (local_id) @punctuation.special)
+; Caret attachment marker `^` / `^{fields}` (SPEC 7.4.4)
+(attachment_cell) @punctuation.special
 
 ; Tabular rows
 (tabular_row) @string
+; Single-cell tabular row whose value is a quoted string (SPEC 2.4)
+(quoted_data_row) @string
 
 ; Comments
 (comment) @comment

@@ -1,5 +1,18 @@
 # Changelog
 
+## v1.4.0 (2026-08-07)
+
+### Spec v3.5.0 support (keyed-tabular maps, wider value positions)
+
+Built against GCF spec v3.5.0.
+
+- Keyed-tabular map encoding (SPEC 7.2a). The `[N:]` and `[?:]` count brackets (new `keyed_marker` node) now parse in section headers, attachment arrays, and streaming sections, in the anonymous (`## [2:]{key,cpu}`), named (`## servers [2:]{key,cpu}`), and empty-name (`## "" [2:]{key,a}`) wrapper forms. Keyed rows carry a leading key cell followed by the member's value cells; single-value-column and `@id`-prefixed attachment rows are covered.
+- Single-cell tabular data rows whose value is a quoted string (`"true"`, `"^{a}"`, `"a|b"`) now parse as a new `quoted_data_row` node, and bare single-word data rows (including non-ASCII values such as `café`) parse as `text_line` instead of dead-ending against an identifier token.
+- The graph symbol line's `kind` and `provenance` fields, and the edge line's `status` field, accept quoted and non-ASCII values in more positions. `kind` and `provenance` are matched as whitespace-delimited tokens (GCF structural tokens are matched at the code-point level, SPEC 1), so a leading grapheme-extending scalar parses; `status` is matched verbatim rather than a closed `added`/`removed` set (SPEC 6).
+- The `@N ^` / `@N ^{fields}` caret attachment-marker row (SPEC 7.4.4) now parses as an `expanded_item` with a new `attachment_cell` node, including empty-key flatten cases (`## [1]{""}` with `@0 ^` and a `."" {}` attachment).
+- Field declarations continue to accept quoted and empty-quoted field names (`{key,""}`, `{""}`, `{"loc>city"}`) in these new keyed and flatten contexts.
+- Every payload in the sibling conformance suite (now at spec v3.5.0, 201 parsed payloads) parses with zero `ERROR` nodes; the `npm run test:conformance` allow-list stays empty. Added corpus tests for the keyed-map, caret-row, quoted/non-ASCII value, and non-ASCII graph-field forms.
+
 ## v1.3.3 (2026-07-13)
 
 ### Full conformance-parse coverage (generic-profile edge cases)

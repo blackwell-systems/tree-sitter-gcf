@@ -29,6 +29,7 @@ module.exports = grammar({
         prec(3, $.kv_line),
         prec(3, $.expanded_item),
         prec(2, $.tabular_row),
+        prec(2, $.quoted_data_row),
         prec(1, $.text_line),
         $.blank_line,
       ),
@@ -89,9 +90,15 @@ module.exports = grammar({
       /[a-zA-Z_][a-zA-Z0-9_]*/,
     ),
 
-    count_bracket: ($) => seq("[", choice($.count_number, $.deferred_marker), "]"),
+    // Count brackets: `[N]`, `[?]` (deferred/streaming), and the keyed-tabular
+    // map variants `[N:]` / `[?:]` (SPEC 7.2a). The trailing `:` marks the
+    // section as a keyed map: the first field column (`key`) holds the member
+    // key and the remaining columns are the member's value fields.
+    count_bracket: ($) =>
+      seq("[", choice($.count_number, $.deferred_marker), optional($.keyed_marker), "]"),
     count_number: ($) => /\d+/,
     deferred_marker: ($) => "?",
+    keyed_marker: ($) => ":",
 
     // A field declaration lists the columns of a tabular/delta section. In the
     // generic-profile delta form (SPEC Section 10a) the identity column is marked
@@ -135,12 +142,19 @@ module.exports = grammar({
     id_number: ($) => /\d+/,
     // A kind abbreviation. The standard table (SPEC Section 5) is fn / type /
     // method / iface / var / const / ..., but decoders MUST accept unknown kinds
-    // verbatim (Section 5), so this matches any identifier token rather than a
-    // closed set. Safe here because the symbol line is anchored by its `@id` prefix.
-    kind: ($) => /[a-zA-Z_][a-zA-Z0-9_]*/,
+    // verbatim (Section 5), so this matches any whitespace-delimited token rather
+    // than a closed set. Non-ASCII code points are ordinary content (GCF
+    // structural tokens are matched at the code-point level, SPEC 1), so the
+    // token is not restricted to ASCII. Safe here because the symbol line is
+    // anchored by its `@id` prefix and each field is whitespace-delimited. A
+    // leading `=`, `{`, `[` is excluded so an `@id`-prefixed expanded item
+    // (`@0 =scalar`, `@0 {}`, `@0 [N]...`) is not mis-lexed as a symbol line.
+    kind: ($) => /[^\s={\[][^\s]*/,
     qualified_name: ($) => /[^\s]+/,
     score: ($) => /\d+\.\d+/,
-    provenance: ($) => /[a-zA-Z_][a-zA-Z0-9_]*/,
+    // A discovery-method string. Whitespace-delimited, may contain non-ASCII
+    // content (e.g. a grapheme-extending leading scalar); see `kind`.
+    provenance: ($) => /[^\s]+/,
 
     // ---------------------------------------------------------------
     // @0<@1 calls [added|removed]
@@ -159,7 +173,11 @@ module.exports = grammar({
     target_ref: ($) => seq("@", $.id_number),
     source_ref: ($) => seq("@", $.id_number),
     edge_type: ($) => /[a-zA-Z_]+/,
-    edge_status: ($) => choice("added", "removed"),
+    // Optional trailing status. `added` / `removed` are the documented diff
+    // values (SPEC 6), but decoders accept the status verbatim, so this matches
+    // any identifier-like token (e.g. `active`) rather than a closed set.
+    // Anchored as the final field of the edge line.
+    edge_status: ($) => /[a-zA-Z_][a-zA-Z0-9_]*/,
 
     // Graph delta `## edges_added` / `## edges_removed` lines: `source -> target type`.
     // Matched as an atomic token (requires `->` and includes the newline) so it wins
@@ -252,8 +270,12 @@ module.exports = grammar({
     ),
 
     // ---------------------------------------------------------------
-    // @N =scalar, @N {}, @N [N]: vals, @N [N]{fields}
+    // @N =scalar, @N {}, @N [N]: vals, @N [N]{fields}, @N ^, @N ^{fields}
     // ---------------------------------------------------------------
+    // The `@N ^` / `@N ^{fields}` forms are a single-column tabular row whose
+    // sole cell is an attachment-marker caret (SPEC 7.4.4: `attachment-cell =
+    // "^" / "^" field-decl`). A row with a `^` cell requires the `@{id}` prefix
+    // (SPEC 7.4.4), so this is matched here rather than as a bare `tabular_row`.
     expanded_item: ($) =>
       seq(
         optional($._indent),
@@ -263,9 +285,14 @@ module.exports = grammar({
           seq("=", $.scalar_value),
           "{}",
           $.attachment_array,
+          $.attachment_cell,
         ),
         $._newline,
       ),
+
+    // A caret attachment marker: bare `^`, or `^{fields}` declaring an inline
+    // object schema for the cell (SPEC 7.4.4a).
+    attachment_cell: ($) => seq("^", optional($.field_decl)),
 
     // ---------------------------------------------------------------
     // val1|val2|val3 (tabular row, may have @N prefix)
@@ -275,6 +302,16 @@ module.exports = grammar({
         /[^\n]*\|[^\n]*/,
         /\n/,
       )),
+
+    // ---------------------------------------------------------------
+    // A single-column tabular data row whose cell is a quoted string, e.g.
+    // `"true"`, `"^{a}"`, `"a|b"` (SPEC 2.4: any value that would otherwise
+    // collide with a structural form is quoted). Single-cell rows carry no
+    // pipe, so they are not caught by `tabular_row`, and a leading `"` is
+    // excluded from `text_content`. Matched as an atomic token so the quoted
+    // cell (which may contain `|`, `=`, `{`) is not re-lexed.
+    quoted_data_row: ($) =>
+      token(seq(/"(?:[^"\\]|\\.)*"/, /\r?\n/)),
 
     // ---------------------------------------------------------------
     // key=value (with optional indentation)
@@ -303,13 +340,17 @@ module.exports = grammar({
       token(seq(/ {2,}/, /[^.@#\n][^\n]*/, /\n/)),
 
     // ---------------------------------------------------------------
-    // Fallback for unrecognized lines
-    // Lines not starting with GCF, ##, @, #, ., = and not containing |
+    // Fallback for unrecognized lines, including single-cell tabular data rows
+    // whose value is a bare word (e.g. `plain`, `foo`). Lines not starting with
+    // GCF, ##, @, #, ., = and not containing | or =. Matched as an atomic,
+    // whole-line token so a bare alphabetic value wins maximal munch over the
+    // shorter identifier tokens (inline_array_name, section_name) it would
+    // otherwise tie with and dead-end against.
     // ---------------------------------------------------------------
-    text_line: ($) =>
-      seq($.text_content, $._newline),
+    text_line: ($) => $.text_content,
 
-    text_content: ($) => /[^GCF@#.=|"\n\r \t][^\n|=]*/,
+    text_content: ($) =>
+      token(seq(/[^GCF@#.=|"\n\r \t][^\n|=]*/, /\r?\n/)),
 
     // ---------------------------------------------------------------
     // Shared tokens

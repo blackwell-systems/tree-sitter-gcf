@@ -27,6 +27,21 @@
     }
   },
   {
+    "type": "attachment_cell",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "field_decl",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "attachment_line",
     "named": true,
     "fields": {},
@@ -83,7 +98,7 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
@@ -92,6 +107,10 @@
         },
         {
           "type": "deferred_marker",
+          "named": true
+        },
+        {
+          "type": "keyed_marker",
           "named": true
         }
       ]
@@ -149,6 +168,10 @@
       "types": [
         {
           "type": "attachment_array",
+          "named": true
+        },
+        {
+          "type": "attachment_cell",
           "named": true
         },
         {
@@ -303,7 +326,7 @@
     "fields": {}
   },
   {
-    "type": "kind",
+    "type": "keyed_marker",
     "named": true,
     "fields": {}
   },
@@ -382,6 +405,11 @@
   },
   {
     "type": "provenance",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "qualified_name",
     "named": true,
     "fields": {}
   },
@@ -494,6 +522,10 @@
         },
         {
           "type": "kv_line",
+          "named": true
+        },
+        {
+          "type": "quoted_data_row",
           "named": true
         },
         {
@@ -676,7 +708,7 @@
     "named": false
   },
   {
-    "type": "added",
+    "type": "^",
     "named": false
   },
   {
@@ -708,7 +740,11 @@
     "named": true
   },
   {
-    "type": "qualified_name",
+    "type": "kind",
+    "named": true
+  },
+  {
+    "type": "quoted_data_row",
     "named": true
   },
   {
@@ -718,10 +754,6 @@
   {
     "type": "ref_line",
     "named": true
-  },
-  {
-    "type": "removed",
-    "named": false
   },
   {
     "type": "removed_line",
