@@ -622,7 +622,7 @@
     },
     "kind": {
       "type": "PATTERN",
-      "value": "[^\\s={\\[][^\\s]*"
+      "value": "[^\\s={\\[\\^][^\\s]*"
     },
     "qualified_name": {
       "type": "PATTERN",
@@ -1180,6 +1180,19 @@
             {
               "type": "SYMBOL",
               "name": "attachment_cell"
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "SYMBOL",
+                "name": "kind"
+              },
+              "named": true,
+              "value": "expanded_value"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "quoted_string"
             }
           ]
         },

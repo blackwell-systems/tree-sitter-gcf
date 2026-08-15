@@ -542,3 +542,74 @@ GCF profile=graph tool=t symbols=1
       (id_number))
     (edge_type)
     (edge_status)))
+
+================================================================================
+Generic expanded row with bare/quoted positional value (SPEC 7.4)
+================================================================================
+
+GCF profile=generic
+## [2]{"a,b"}
+@0 0
+."a>b" ="~"
+@1 "@x"
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (blank_line)
+  (header
+    (gcf_keyword)
+    (header_pair
+      (header_key)
+      (header_value)))
+  (section_header
+    (count_bracket
+      (count_number))
+    (field_decl
+      (field_name
+        (quoted_string))))
+  (expanded_item
+    (local_id
+      (id_number))
+    (expanded_value))
+  (attachment_line
+    (attachment_name
+      (quoted_string))
+    (scalar_value))
+  (expanded_item
+    (local_id
+      (id_number))
+    (expanded_value)))
+
+================================================================================
+Expanded row with caret attachment-cell field schema (SPEC 7.4.4a)
+================================================================================
+
+GCF profile=generic
+## [1]{"id"}
+@0 ^{"@x","a>b"}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (blank_line)
+  (header
+    (gcf_keyword)
+    (header_pair
+      (header_key)
+      (header_value)))
+  (section_header
+    (count_bracket
+      (count_number))
+    (field_decl
+      (field_name
+        (quoted_string))))
+  (expanded_item
+    (local_id
+      (id_number))
+    (attachment_cell
+      (field_decl
+        (field_name
+          (quoted_string))
+        (field_name
+          (quoted_string))))))

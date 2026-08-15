@@ -175,7 +175,15 @@
           "named": true
         },
         {
+          "type": "expanded_value",
+          "named": true
+        },
+        {
           "type": "local_id",
+          "named": true
+        },
+        {
+          "type": "quoted_string",
           "named": true
         },
         {
@@ -725,6 +733,10 @@
   },
   {
     "type": "edge_type",
+    "named": true
+  },
+  {
+    "type": "expanded_value",
     "named": true
   },
   {

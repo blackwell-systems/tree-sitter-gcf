@@ -147,9 +147,10 @@ module.exports = grammar({
     // structural tokens are matched at the code-point level, SPEC 1), so the
     // token is not restricted to ASCII. Safe here because the symbol line is
     // anchored by its `@id` prefix and each field is whitespace-delimited. A
-    // leading `=`, `{`, `[` is excluded so an `@id`-prefixed expanded item
-    // (`@0 =scalar`, `@0 {}`, `@0 [N]...`) is not mis-lexed as a symbol line.
-    kind: ($) => /[^\s={\[][^\s]*/,
+    // leading `=`, `{`, `[`, `^` is excluded so an `@id`-prefixed expanded item
+    // (`@0 =scalar`, `@0 {}`, `@0 [N]...`, `@0 ^{fields}`) is not mis-lexed as a
+    // symbol line (kinds never begin with a GCF structural marker).
+    kind: ($) => /[^\s={\[\^][^\s]*/,
     qualified_name: ($) => /[^\s]+/,
     score: ($) => /\d+\.\d+/,
     // A discovery-method string. Whitespace-delimited, may contain non-ASCII
@@ -286,6 +287,17 @@ module.exports = grammar({
           "{}",
           $.attachment_array,
           $.attachment_cell,
+          // Bare positional value for a section with named fields: `@0 0`,
+          // `@0 -1`, `@0 "@x"`. It reuses the same `kind` / `quoted_string`
+          // tokens the graph `symbol_line` consumes, so the lexer emits one
+          // token and the declared [symbol_line, expanded_item] conflict lets
+          // the GLR parser keep both alive until the newline decides: a lone
+          // value + `\n` completes the expanded row; a following field means a
+          // symbol line. Pipe rows never reach here (matched atomically by the
+          // longer `tabular_row` token). The shared `kind` token is aliased to
+          // `expanded_value` so the node reads correctly in the generic profile.
+          alias($.kind, $.expanded_value),
+          $.quoted_string,
         ),
         $._newline,
       ),
