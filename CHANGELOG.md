@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.5.0 (2026-10-02)
+
+### Spec v3.6.0 support (constant-column factoring, value-grouping)
+
+- `field_decl` now accepts constant-column entries (`name=value`, SPEC 7.4.7).
+- `section_header` now accepts a `group=<col>` clause (value-grouping, SPEC 7.4.8); `@`-marked key columns were already parsed via `identity_field`. A group subheader (`<col>=<value> [count]`) parses as a key-value line.
+- Regenerated parser; corpus coverage added for both forms (23/23 passing).
+
 ## v1.4.0 (2026-08-07)
 
 ### Spec v3.5.0 support (keyed-tabular maps, wider value positions)
