@@ -94,6 +94,40 @@
     "fields": {}
   },
   {
+    "type": "const_value",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "quoted_string",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "constant_field",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "const_value",
+          "named": true
+        },
+        {
+          "type": "field_name",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "count_bracket",
     "named": true,
     "fields": {},
@@ -202,6 +236,10 @@
       "required": true,
       "types": [
         {
+          "type": "constant_field",
+          "named": true
+        },
+        {
           "type": "field_name",
           "named": true
         },
@@ -222,6 +260,21 @@
       "types": [
         {
           "type": "quoted_string",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "group_clause",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "field_name",
           "named": true
         }
       ]
@@ -455,6 +508,10 @@
         },
         {
           "type": "field_decl",
+          "named": true
+        },
+        {
+          "type": "group_clause",
           "named": true
         },
         {
@@ -742,6 +799,10 @@
   {
     "type": "gcf_keyword",
     "named": true
+  },
+  {
+    "type": "group=",
+    "named": false
   },
   {
     "type": "header_value",

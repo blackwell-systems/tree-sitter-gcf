@@ -613,3 +613,68 @@ GCF profile=generic
           (quoted_string))
         (field_name
           (quoted_string))))))
+
+==================
+Constant-column factoring (SPEC 7.4.7)
+==================
+
+GCF profile=generic
+## [2]{id,region=us-east,n}
+u1|1
+u2|2
+
+---
+
+(source_file
+  (blank_line)
+  (header
+    (gcf_keyword)
+    (header_pair
+      (header_key)
+      (header_value)))
+  (section_header
+    (count_bracket
+      (count_number))
+    (field_decl
+      (field_name)
+      (constant_field
+        (field_name)
+        (const_value))
+      (field_name)))
+  (tabular_row)
+  (tabular_row))
+
+==================
+Value-grouping header with @-key and group clause (SPEC 7.4.8)
+==================
+
+GCF profile=generic
+## [2]{@id,dept,x} group=dept
+dept=Sales [2]
+u1|1
+u2|1
+
+---
+
+(source_file
+  (blank_line)
+  (header
+    (gcf_keyword)
+    (header_pair
+      (header_key)
+      (header_value)))
+  (section_header
+    (count_bracket
+      (count_number))
+    (field_decl
+      (identity_field
+        (field_name))
+      (field_name)
+      (field_name))
+    (group_clause
+      (field_name)))
+  (kv_line
+    (kv_key)
+    (kv_value))
+  (tabular_row)
+  (tabular_row))

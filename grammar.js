@@ -80,10 +80,15 @@ module.exports = grammar({
         optional($.section_name),
         optional(seq(optional($._ws), $.count_bracket)),
         optional($.field_decl),
+        // Value-grouping (SPEC 7.4.8): a keyed set clustered by one low-cardinality
+        // column, named after the field declaration as `group=<col>`.
+        optional($.group_clause),
         // Root/section primitive array: `## [N]: a,b,c`
         optional(seq(":", optional($._ws), $.inline_values)),
         $._newline,
       ),
+
+    group_clause: ($) => seq($._ws, "group=", $.field_name),
 
     section_name: ($) => choice(
       $.quoted_string,
@@ -106,11 +111,16 @@ module.exports = grammar({
     field_decl: ($) =>
       seq(
         "{",
-        choice($.identity_field, $.field_name),
-        repeat(seq(",", choice($.identity_field, $.field_name))),
+        choice($.identity_field, $.constant_field, $.field_name),
+        repeat(seq(",", choice($.identity_field, $.constant_field, $.field_name))),
         "}",
       ),
     identity_field: ($) => seq("@", $.field_name),
+    // Constant-column factoring (SPEC 7.4.7): a field whose value is identical in
+    // every record is declared once in the header as `name=value` and omitted from
+    // the rows. The value is a scalar; `,` and `}` inside it are quoted.
+    constant_field: ($) => seq($.field_name, "=", $.const_value),
+    const_value: ($) => choice($.quoted_string, /[^,}\n"]+/),
     field_name: ($) => choice(
       $.quoted_string,
       /[a-zA-Z_][a-zA-Z0-9_]*/,

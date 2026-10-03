@@ -358,6 +358,18 @@
           "type": "CHOICE",
           "members": [
             {
+              "type": "SYMBOL",
+              "name": "group_clause"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
               "type": "SEQ",
               "members": [
                 {
@@ -390,6 +402,23 @@
         {
           "type": "SYMBOL",
           "name": "_newline"
+        }
+      ]
+    },
+    "group_clause": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_ws"
+        },
+        {
+          "type": "STRING",
+          "value": "group="
+        },
+        {
+          "type": "SYMBOL",
+          "name": "field_name"
         }
       ]
     },
@@ -472,6 +501,10 @@
             },
             {
               "type": "SYMBOL",
+              "name": "constant_field"
+            },
+            {
+              "type": "SYMBOL",
               "name": "field_name"
             }
           ]
@@ -491,6 +524,10 @@
                   {
                     "type": "SYMBOL",
                     "name": "identity_field"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "constant_field"
                   },
                   {
                     "type": "SYMBOL",
@@ -517,6 +554,36 @@
         {
           "type": "SYMBOL",
           "name": "field_name"
+        }
+      ]
+    },
+    "constant_field": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "field_name"
+        },
+        {
+          "type": "STRING",
+          "value": "="
+        },
+        {
+          "type": "SYMBOL",
+          "name": "const_value"
+        }
+      ]
+    },
+    "const_value": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "quoted_string"
+        },
+        {
+          "type": "PATTERN",
+          "value": "[^,}\\n\"]+"
         }
       ]
     },
